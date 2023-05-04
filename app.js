@@ -6,6 +6,7 @@ const express = require('express');
 const app = express();
 
 // configurações
+require('./db');
 
 // middlewares gerais
 
@@ -13,7 +14,7 @@ const app = express();
 
 // gerenciamento de erros
 app.use((req, res) => {
-  res.status(404).json('Não encontrado.');
+  res.status(404).json('Não encontrado.'); // @TODO: será atualizado depois!
 })
 
 // exportar app
