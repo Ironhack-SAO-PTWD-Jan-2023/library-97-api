@@ -12,6 +12,8 @@ require('./configs')(app);
 // middlewares gerais
 
 // rotas
+const bookRoutes = require('./routes/book.routes');
+app.use('/books', bookRoutes);
 
 // gerenciamento de erros
 app.use((req, res) => {
