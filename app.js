@@ -7,6 +7,7 @@ const app = express();
 
 // configurações
 require('./db');
+require('./configs')(app);
 
 // middlewares gerais
 
