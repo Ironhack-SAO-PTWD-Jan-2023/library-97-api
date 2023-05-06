@@ -13,6 +13,7 @@ require('./configs')(app);
 
 // rotas
 app.use('/books', require('./routes/book.routes'));
+app.use('/user', require('./routes/user.routes'));
 
 // gerenciamento de erros
 require('./error-handling')(app);

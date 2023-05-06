@@ -65,10 +65,5 @@ router.delete('/:bookId', async (req, res, next) => {
   }
 })
 
-// teste
-router.get('/test', (req, res, next) => {
-  res.json('Rota de BOOKS com sucesso!');
-})
-
 // exportando rotas
 module.exports = router;
