@@ -7,6 +7,17 @@ const userSchema = new Schema({
     unique: true,
     trim: true
   },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    lowercase: true
+  },
+  passwordHash: {
+    type: String,
+    required: true
+  },
   books: {
     type: [ Schema.Types.ObjectId ],
     ref: 'Book'

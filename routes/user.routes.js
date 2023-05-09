@@ -50,9 +50,4 @@ router.get('/:userId', async (req, res, next) => {
   }
 })
 
-// teste
-router.get('/test', (req, res) => {
-  res.json('rotas de USER conectadas!');
-})
-
 module.exports = router;
