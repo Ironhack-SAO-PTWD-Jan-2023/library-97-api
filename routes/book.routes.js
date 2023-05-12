@@ -3,9 +3,12 @@ const router = require('express').Router();
 // modelo
 const Book = require('../models/Book.model');
 
+// middlewares
+const { isAdmin } = require('../middlewares/role.middleware');
+
 // rotas
 // Crud -> Create
-router.post('/', async (req, res, next) => {
+router.post('/', isAdmin, async (req, res, next) => {
   const { title, description, author, rating } = req.body;
   try {
     if(!title) {
@@ -55,7 +58,7 @@ router.put('/:bookId', async (req, res, next) => {
 })
 
 // cruD -> Delete;
-router.delete('/:bookId', async (req, res, next) => {
+router.delete('/:bookId', isAdmin, async (req, res, next) => {
   const { bookId } = req.params;
   try{
     await Book.findByIdAndRemove(bookId);

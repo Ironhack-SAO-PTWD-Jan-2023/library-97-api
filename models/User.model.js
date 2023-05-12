@@ -21,6 +21,11 @@ const userSchema = new Schema({
   books: {
     type: [ Schema.Types.ObjectId ],
     ref: 'Book'
+  },
+  role: {
+    type: String,
+    enum: ['user', 'admin'],
+    lowercase: true
   }
 }, { timestamps: true });
 

@@ -10,8 +10,12 @@ require('./db');
 require('./configs')(app);
 
 // middlewares gerais
+const { isAuthenticated } = require('./middlewares/jwt.middleware');
 
 // rotas
+app.use('/auth', require('./routes/auth.routes'));
+
+app.use(isAuthenticated);
 app.use('/books', require('./routes/book.routes'));
 app.use('/user', require('./routes/user.routes'));
 

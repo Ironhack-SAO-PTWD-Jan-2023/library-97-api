@@ -1,17 +1,19 @@
 const router = require('express').Router();
 
+const { isAuthenticated } = require('../middlewares/jwt.middleware');
+
 const User = require('../models/User.model');
 
-// Create
-router.post('/', async (req, res, next) => {
-  const { username } = req.body;
-  try {
-    await User.create({ username });
-    res.status(201).json(`Usuário ${username} criado com sucesso!`);
-  } catch (error) {
-    next(error);
-  }
-})
+// Create -> foi para o auth.routes.js
+// router.post('/', async (req, res, next) => {
+//   const { username } = req.body;
+//   try {
+//     await User.create({ username });
+//     res.status(201).json(`Usuário ${username} criado com sucesso!`);
+//   } catch (error) {
+//     next(error);
+//   }
+// })
 
 // List users
 router.get('/', async (req, res, next) => {
@@ -24,11 +26,13 @@ router.get('/', async (req, res, next) => {
 })
 
 // adicionar livro ao usuário
-router.post('/:userId/add-book/:bookId', async (req, res, next) => {
-  const { userId, bookId } = req.params;
+router.post('/add-book/:bookId', isAuthenticated, async (req, res, next) => {
+  const { bookId } = req.params;
+  const userId = req.payload._id;
   try {
     const userFromDB = await User.findByIdAndUpdate(userId, { $push: { books: bookId } }, { new: true });
-    res.status(200).json(userFromDB);
+    const { _id, username, books } = userFromDB; // para não enviar o passwordHash!!
+    res.status(200).json({ _id, username, books });
   } catch (error) {
     next(error);
   }
