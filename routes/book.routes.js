@@ -8,14 +8,12 @@ const { isAdmin } = require('../middlewares/role.middleware');
 
 // rotas
 // Crud -> Create
-router.post('/', isAdmin, async (req, res, next) => {
+router.post('/', async (req, res, next) => {
   const { title, description, author, rating } = req.body;
   try {
     if(!title) {
-      const error = new Error();
-      error.message = 'Título é obrigatório';
-      error.code = 400;
-      throw error;
+      res.status(400).json({message: "Título é obrigatório!"});
+      return;
     };
     // await Book.create(req.body);
     const newBookFromDB = await Book.create({ title, description, author, rating });
@@ -58,7 +56,7 @@ router.put('/:bookId', async (req, res, next) => {
 })
 
 // cruD -> Delete;
-router.delete('/:bookId', isAdmin, async (req, res, next) => {
+router.delete('/:bookId', async (req, res, next) => {
   const { bookId } = req.params;
   try{
     await Book.findByIdAndRemove(bookId);
