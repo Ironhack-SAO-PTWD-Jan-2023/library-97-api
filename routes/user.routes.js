@@ -1,6 +1,7 @@
 const router = require('express').Router();
 
 const { isAuthenticated } = require('../middlewares/jwt.middleware');
+const uploadImage = require('../middlewares/cloudinary.middleware');
 
 const User = require('../models/User.model');
 
@@ -38,6 +39,16 @@ router.post('/add-book/:bookId', isAuthenticated, async (req, res, next) => {
   }
 });
 
+router.get('/profile', async (req, res, next) => {
+  const userId = req.payload._id;
+  try {
+    const userFromDB = await User.findById(userId, { passwordHash: 0 });
+    res.json(userFromDB);
+  } catch (error) {
+    next(error)
+  }
+})
+
 // listar usuário com as informações dos livros
 router.get('/:userId', async (req, res, next) => {
   const { userId } = req.params;
@@ -50,8 +61,22 @@ router.get('/:userId', async (req, res, next) => {
     });
     res.status(200).json(userFromDB);
   } catch (error) {
-    
+    next(error);
   }
-})
+});
+
+router.put('/image', uploadImage.single('profileImage'), async (req, res, next) => {
+  const userId = req.payload._id;
+  console.log(req.body)
+  try {
+    const { path } = req.file;
+    const userFromDB = await User.findByIdAndUpdate(userId, { avatarUrl: path }, { new: true });
+    const { username, avatarUrl } = userFromDB;
+    res.json({ message: 'Upload Success!', user: { username, avatarUrl }});
+  } catch (error) {
+    next(error); 
+  }
+});
+
 
 module.exports = router;
